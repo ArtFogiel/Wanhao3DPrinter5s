@@ -4,3 +4,7 @@ This is 95% taken from
 https://github.com/Jacotheron/Repetier-1.0.3-Wanhao-D5S
 
 I modified to support a thermistor (I'm using an E3V6 hotend) and the motherboard controlling a heated bed
+
+TODO
+Update the thermocouple decouple code
+Update the bed so when plugged in it sets the bed enabled flag in configuration file.
