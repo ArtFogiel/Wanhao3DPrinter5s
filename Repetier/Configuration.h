@@ -166,18 +166,18 @@
 #define HEATED_BED_PREHEAT_TEMP 55
 #define HEATED_BED_MAX_TEMP 120
 #define SKIP_M190_IF_WITHIN 3
-#define HEATED_BED_SENSOR_TYPE 14
+#define HEATED_BED_SENSOR_TYPE 97
 #define HEATED_BED_SENSOR_PIN TEMP_1_PIN
 #define HEATED_BED_HEATER_PIN HEATER_1_PIN
 #define HEATED_BED_SET_INTERVAL 5000
-#define HEATED_BED_HEAT_MANAGER 0
+#define HEATED_BED_HEAT_MANAGER 1
 #define HEATED_BED_PID_INTEGRAL_DRIVE_MAX 255
 #define HEATED_BED_PID_INTEGRAL_DRIVE_MIN 80
 #define HEATED_BED_PID_PGAIN_OR_DEAD_TIME   196
 #define HEATED_BED_PID_IGAIN   33
 #define HEATED_BED_PID_DGAIN 290
 #define HEATED_BED_PID_MAX 255
-#define HEATED_BED_DECOUPLE_TEST_PERIOD 60000
+#define HEATED_BED_DECOUPLE_TEST_PERIOD 10000
 #define MIN_EXTRUDER_TEMP 150
 #define MAXTEMP 275
 #define MIN_DEFECT_TEMPERATURE 5
@@ -219,26 +219,26 @@ Honeywell 100K Thermistor (135-104LAG-J01)  : R0 = 100000  T0 = 25  Beta = 3974
 */
 
 /** Reference Temperature */
-#define GENERIC_THERM1_T0 25.5
+#define GENERIC_THERM1_T0 22.3
 /** Resistance at reference temperature */
-#define GENERIC_THERM1_R0 9970
+#define GENERIC_THERM1_R0 110000
 /** Beta value of thermistor
 
 You can use the beta from the datasheet or compute it yourself.
 See http://reprap.org/wiki/MeasuringThermistorBeta for more details.
 */
-#define GENERIC_THERM1_BETA 6000
+#define GENERIC_THERM1_BETA 4624.159
 /** Start temperature for generated thermistor table */
-#define GENERIC_THERM1_MIN_TEMP -20
+#define GENERIC_THERM1_MIN_TEMP 22.3
 /** End Temperature for generated thermistor table */
-#define GENERIC_THERM1_MAX_TEMP 300
+#define GENERIC_THERM1_MAX_TEMP 150
 #define GENERIC_THERM1_R1 0
 #define GENERIC_THERM1_R2 4700
 /** Supply voltage to ADC, can be changed by setting ANALOG_REF below to different value. */
-#define GENERIC_THERM_VREF 4.92
+#define GENERIC_THERM_VREF 4.943
 /** Number of entries in generated table. One entry takes 4 bytes. Higher number of entries increase computation time too.
 Value is used for all generic tables created. */
-#define GENERIC_THERM_NUM_ENTRIES 33
+#define GENERIC_THERM_NUM_ENTRIES 20
 
 // ##########################################################################################
 // ##                             Laser configuration                                      ##
