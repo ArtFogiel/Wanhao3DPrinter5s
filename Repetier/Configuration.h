@@ -27,7 +27,7 @@
    to see and change the data. You can also upload it to newer/older versions. The system
    will silently add new options, so compilation continues to work.
 
-   This file is optimized for version 1.0.3
+   This file is optimized for version 1.0.4dev
    generator: http://www.repetier.com/firmware/dev/
 
    If you are in doubt which named functions use which pins on your board, please check the
@@ -37,13 +37,14 @@
 */
 
 #define NUM_EXTRUDER 1
-#define MOTHERBOARD 37 // Ultimaker Shield 1.5.7     = 37 (the D5S is based on this board, changes have been made in the Pins.H file to make it compatible)
+#define MOTHERBOARD 37
 #include "pins.h"
 
 // ################## EDIT THESE SETTINGS MANUALLY ################
 
 // ################ END MANUAL SETTINGS ##########################
 
+#define HOST_RESCUE 1
 #undef FAN_BOARD_PIN
 #define FAN_BOARD_PIN -1
 #define BOARD_FAN_SPEED 255
@@ -82,7 +83,7 @@
 #define EXT0_Y_OFFSET 0
 #define EXT0_Z_OFFSET 0
 #define EXT0_STEPS_PER_MM 320
-#define EXT0_TEMPSENSOR_TYPE 8
+#define EXT0_TEMPSENSOR_TYPE 100
 #define EXT0_TEMPSENSOR_PIN TEMP_0_PIN
 #define EXT0_HEATER_PIN HEATER_0_PIN
 #define EXT0_STEP_PIN ORIG_E0_STEP_PIN
@@ -116,7 +117,7 @@
 #define EXT0_DESELECT_COMMANDS ""
 #define EXT0_EXTRUDER_COOLER_PIN -1
 #define EXT0_EXTRUDER_COOLER_SPEED 255
-#define EXT0_DECOUPLE_TEST_PERIOD 0
+#define EXT0_DECOUPLE_TEST_PERIOD 12000
 #define EXT0_JAM_PIN -1
 #define EXT0_JAM_PULLUP 0
 
@@ -157,16 +158,17 @@
 #define USER_THERMISTORTABLE2 {}
 #define GENERIC_THERM_VREF 5
 #define GENERIC_THERM_NUM_ENTRIES 33
+#define TEMP_GAIN 0
 #define HEATER_PWM_SPEED 0
 #define COOLER_PWM_SPEED 0
 
-// ############# Heated  configuration ########################
+// ############# Heated bed configuration ########################
 
 #define HAVE_HEATED_BED 1
 #define HEATED_BED_PREHEAT_TEMP 55
 #define HEATED_BED_MAX_TEMP 120
 #define SKIP_M190_IF_WITHIN 3
-#define HEATED_BED_SENSOR_TYPE 97
+#define HEATED_BED_SENSOR_TYPE 4
 #define HEATED_BED_SENSOR_PIN TEMP_1_PIN
 #define HEATED_BED_HEATER_PIN HEATER_1_PIN
 #define HEATED_BED_SET_INTERVAL 5000
@@ -177,68 +179,12 @@
 #define HEATED_BED_PID_IGAIN   33
 #define HEATED_BED_PID_DGAIN 290
 #define HEATED_BED_PID_MAX 255
-#define HEATED_BED_DECOUPLE_TEST_PERIOD 10000
+#define HEATED_BED_DECOUPLE_TEST_PERIOD 60000
 #define MIN_EXTRUDER_TEMP 150
 #define MAXTEMP 275
-#define MIN_DEFECT_TEMPERATURE 5
+#define MIN_DEFECT_TEMPERATURE -10
 #define MAX_DEFECT_TEMPERATURE 290
 #define MILLISECONDS_PREHEAT_TIME 30000
-
-
-/** If defined, creates a thermistor table at startup.
-
-If you don't feel like computing the table on your own, you can use this generic method. It is
-a simple approximation which may be not as accurate as a good table computed from the reference
-values in the datasheet. You can increase precision if you use a temperature/resistance for
-R0/T0, which is near your operating temperature. This will reduce precision for lower temperatures,
-which are not really important. The resistors must fit the following schematic:
-@code
-VREF ---- R2 ---+--- Termistor ---+-- GND
-                |                 |
-                +------ R1 -------+
-                |                 |
-                +---- Capacitor --+
-                |
-                V measured
-@endcode
-
-If you don't have R1, set it to 0.
-The capacitor is for reducing noise from long thermistor cable. If you don't have one, it's OK.
-
-If you need the generic table, uncomment the following define.
-*/
-#define USE_GENERIC_THERMISTORTABLE_1
-
-/* Some examples for different thermistors:
-
-EPCOS B57560G104+ : R0 = 100000  T0 = 25  Beta = 4036
-EPCOS 100K Thermistor (B57560G1104F) :  R0 = 100000  T0 = 25  Beta = 4092
-ATC Semitec 104GT-2 : R0 = 100000  T0 = 25  Beta = 4267
-Honeywell 100K Thermistor (135-104LAG-J01)  : R0 = 100000  T0 = 25  Beta = 3974
-
-*/
-
-/** Reference Temperature */
-#define GENERIC_THERM1_T0 22.3
-/** Resistance at reference temperature */
-#define GENERIC_THERM1_R0 110000
-/** Beta value of thermistor
-
-You can use the beta from the datasheet or compute it yourself.
-See http://reprap.org/wiki/MeasuringThermistorBeta for more details.
-*/
-#define GENERIC_THERM1_BETA 4624.159
-/** Start temperature for generated thermistor table */
-#define GENERIC_THERM1_MIN_TEMP 22.3
-/** End Temperature for generated thermistor table */
-#define GENERIC_THERM1_MAX_TEMP 150
-#define GENERIC_THERM1_R1 0
-#define GENERIC_THERM1_R2 4700
-/** Supply voltage to ADC, can be changed by setting ANALOG_REF below to different value. */
-#define GENERIC_THERM_VREF 4.943
-/** Number of entries in generated table. One entry takes 4 bytes. Higher number of entries increase computation time too.
-Value is used for all generic tables created. */
-#define GENERIC_THERM_NUM_ENTRIES 20
 
 // ##########################################################################################
 // ##                             Laser configuration                                      ##
@@ -391,7 +337,7 @@ It also can add a delay to wait for spindle to run on full speed.
 #define Y_MIN_POS 0
 #define Z_MIN_POS 0
 #define PARK_POSITION_X 0
-#define PARK_POSITION_Y 10
+#define PARK_POSITION_Y 0
 #define PARK_POSITION_Z_RAISE 10
 
 
@@ -612,8 +558,9 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define LANGUAGE_CZ_ACTIVE 0
 #define LANGUAGE_PL_ACTIVE 0
 #define LANGUAGE_TR_ACTIVE 0
+#define LANGUAGE_RU_ACTIVE 0
 #define UI_PRINTER_NAME "Wanhao D5S"
-#define UI_PRINTER_COMPANY "XiliX Tech"
+#define UI_PRINTER_COMPANY "Arts Awesome"
 #define UI_PAGES_DURATION 4000
 #define UI_SPEEDDEPENDENT_POSITIONING 0
 #define UI_DISABLE_AUTO_PAGESWITCH 1
@@ -641,7 +588,7 @@ Values must be in range 1..255
 #define UI_SET_MIN_HEATED_BED_TEMP  30
 #define UI_SET_MAX_HEATED_BED_TEMP 120
 #define UI_SET_MIN_EXTRUDER_TEMP   150
-#define UI_SET_MAX_EXTRUDER_TEMP   260
+#define UI_SET_MAX_EXTRUDER_TEMP   300
 #define UI_SET_EXTRUDER_FEEDRATE 2
 #define UI_SET_EXTRUDER_RETRACT_DISTANCE 1
 
@@ -884,7 +831,7 @@ Values must be in range 1..255
     "homeOrder": "HOME_ORDER_XYZ",
     "featureController": 11,
     "uiPrinterName": "Wanhao D5S",
-    "uiPrinterCompany": "XiliX Tech",
+    "uiPrinterCompany": "Arts Awesome",
     "uiPagesDuration": 4000,
     "uiHeadline": "",
     "uiDisablePageswitch": "1",
@@ -900,7 +847,7 @@ Values must be in range 1..255
     "uiMinHeatedBed": 30,
     "uiMaxHeatedBed": 120,
     "uiMinEtxruderTemp": 150,
-    "uiMaxExtruderTemp": 260,
+    "uiMaxExtruderTemp": 300,
     "uiExtruderFeedrate": 2,
     "uiExtruderRetractDistance": 1,
     "uiSpeeddependentPositioning": "0",
@@ -908,7 +855,7 @@ Values must be in range 1..255
     "bedSensorType": 4,
     "bedSensorPin": "TEMP_1_PIN",
     "bedHeaterPin": "HEATER_1_PIN",
-    "bedHeatManager": 0,
+    "bedHeatManager": 1,
     "bedPreheat": 55,
     "bedUpdateInterval": 5000,
     "bedPidDriveMin": 80,
@@ -1212,6 +1159,7 @@ Values must be in range 1..255
     "langCZ": "0",
     "langPL": "0",
     "langTR": "0",
+    "langRU": "0",
     "interpolateAccelerationWithZ": 0,
     "accelerationFactorTop": 100,
     "bendingCorrectionA": 0,
@@ -1290,12 +1238,16 @@ Values must be in range 1..255
     "TMC2130CSE0": -1,
     "TMC2130CSE1": -1,
     "TMC2130CSE2": -1,
+    "TMC2130CSE3": -1,
+    "TMC2130CSE4": -1,
     "TMC2130CurrentX": 1000,
     "TMC2130CurrentY": 1000,
     "TMC2130CurrentZ": 1000,
     "TMC2130CurrentE0": 1000,
     "TMC2130CurrentE1": 1000,
     "TMC2130CurrentE2": 1000,
+    "TMC2130CurrentE3": 1000,
+    "TMC2130CurrentE4": 1000,
     "TMC2130CoolstepTresholdX": 300,
     "TMC2130CoolstepTresholdY": 300,
     "TMC2130CoolstepTresholdZ": 300,
@@ -1305,9 +1257,16 @@ Values must be in range 1..255
     "microstepE0": 16,
     "microstepE1": 16,
     "microstepE2": 16,
+    "microstepE3": 16,
+    "microstepE4": 16,
     "parkPosX": 0,
     "parkPosY": 0,
     "parkPosZ": 10,
+    "emergencyParser": -1,
+    "hostRescue": "1",
+    "MAX31855SwCS": -1,
+    "MAX31855SwCLK": -1,
+    "tempGain": "0",
     "hasMAX6675": false,
     "hasMAX31855": false,
     "hasGeneric1": false,
@@ -1317,8 +1276,9 @@ Values must be in range 1..255
     "hasUser1": false,
     "hasUser2": false,
     "numExtruder": 1,
-    "version": 100.2,
-    "primaryPortName": ""
+    "version": 100.4,
+    "primaryPortName": "",
+    "hasMAX31855SW": false
 }
 ========== End configuration string ==========
 
