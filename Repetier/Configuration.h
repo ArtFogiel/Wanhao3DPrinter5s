@@ -37,7 +37,7 @@
 */
 
 #define NUM_EXTRUDER 1
-#define MOTHERBOARD 37
+#define MOTHERBOARD 37 // Ultimaker Shield 1.5.7     = 37 (the D5S is based on this board, changes have been made in the Pins.H file to make it compatible)
 #include "pins.h"
 
 // ################## EDIT THESE SETTINGS MANUALLY ################
@@ -83,7 +83,7 @@
 #define EXT0_Y_OFFSET 0
 #define EXT0_Z_OFFSET 0
 #define EXT0_STEPS_PER_MM 320
-#define EXT0_TEMPSENSOR_TYPE 100
+#define EXT0_TEMPSENSOR_TYPE 8
 #define EXT0_TEMPSENSOR_PIN TEMP_0_PIN
 #define EXT0_HEATER_PIN HEATER_0_PIN
 #define EXT0_STEP_PIN ORIG_E0_STEP_PIN
@@ -168,7 +168,7 @@
 #define HEATED_BED_PREHEAT_TEMP 55
 #define HEATED_BED_MAX_TEMP 120
 #define SKIP_M190_IF_WITHIN 3
-#define HEATED_BED_SENSOR_TYPE 4
+#define HEATED_BED_SENSOR_TYPE 97
 #define HEATED_BED_SENSOR_PIN TEMP_1_PIN
 #define HEATED_BED_HEATER_PIN HEATER_1_PIN
 #define HEATED_BED_SET_INTERVAL 5000
@@ -179,12 +179,67 @@
 #define HEATED_BED_PID_IGAIN   33
 #define HEATED_BED_PID_DGAIN 290
 #define HEATED_BED_PID_MAX 255
-#define HEATED_BED_DECOUPLE_TEST_PERIOD 60000
+#define HEATED_BED_DECOUPLE_TEST_PERIOD 10000
 #define MIN_EXTRUDER_TEMP 150
 #define MAXTEMP 275
 #define MIN_DEFECT_TEMPERATURE -10
 #define MAX_DEFECT_TEMPERATURE 290
 #define MILLISECONDS_PREHEAT_TIME 30000
+
+/** If defined, creates a thermistor table at startup.
+
+If you don't feel like computing the table on your own, you can use this generic method. It is
+a simple approximation which may be not as accurate as a good table computed from the reference
+values in the datasheet. You can increase precision if you use a temperature/resistance for
+R0/T0, which is near your operating temperature. This will reduce precision for lower temperatures,
+which are not really important. The resistors must fit the following schematic:
+@code
+VREF ---- R2 ---+--- Termistor ---+-- GND
+                |                 |
+                +------ R1 -------+
+                |                 |
+                +---- Capacitor --+
+                |
+                V measured
+@endcode
+
+If you don't have R1, set it to 0.
+The capacitor is for reducing noise from long thermistor cable. If you don't have one, it's OK.
+
+If you need the generic table, uncomment the following define.
+*/
+#define USE_GENERIC_THERMISTORTABLE_1
+
+/* Some examples for different thermistors:
+
+EPCOS B57560G104+ : R0 = 100000  T0 = 25  Beta = 4036
+EPCOS 100K Thermistor (B57560G1104F) :  R0 = 100000  T0 = 25  Beta = 4092
+ATC Semitec 104GT-2 : R0 = 100000  T0 = 25  Beta = 4267
+Honeywell 100K Thermistor (135-104LAG-J01)  : R0 = 100000  T0 = 25  Beta = 3974
+
+*/
+
+/** Reference Temperature */
+#define GENERIC_THERM1_T0 22.3
+/** Resistance at reference temperature */
+#define GENERIC_THERM1_R0 110000
+/** Beta value of thermistor
+
+You can use the beta from the datasheet or compute it yourself.
+See http://reprap.org/wiki/MeasuringThermistorBeta for more details.
+*/
+#define GENERIC_THERM1_BETA 4624.159
+/** Start temperature for generated thermistor table */
+#define GENERIC_THERM1_MIN_TEMP 22.3
+/** End Temperature for generated thermistor table */
+#define GENERIC_THERM1_MAX_TEMP 150
+#define GENERIC_THERM1_R1 0
+#define GENERIC_THERM1_R2 4700
+/** Supply voltage to ADC, can be changed by setting ANALOG_REF below to different value. */
+#define GENERIC_THERM_VREF 4.943
+/** Number of entries in generated table. One entry takes 4 bytes. Higher number of entries increase computation time too.
+Value is used for all generic tables created. */
+#define GENERIC_THERM_NUM_ENTRIES 20
 
 // ##########################################################################################
 // ##                             Laser configuration                                      ##
@@ -560,7 +615,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define LANGUAGE_TR_ACTIVE 0
 #define LANGUAGE_RU_ACTIVE 0
 #define UI_PRINTER_NAME "Wanhao D5S"
-#define UI_PRINTER_COMPANY "Arts Awesome"
+#define UI_PRINTER_COMPANY "Fogg Industries"
 #define UI_PAGES_DURATION 4000
 #define UI_SPEEDDEPENDENT_POSITIONING 0
 #define UI_DISABLE_AUTO_PAGESWITCH 1
@@ -831,7 +886,7 @@ Values must be in range 1..255
     "homeOrder": "HOME_ORDER_XYZ",
     "featureController": 11,
     "uiPrinterName": "Wanhao D5S",
-    "uiPrinterCompany": "Arts Awesome",
+    "uiPrinterCompany": "Fogg Industries",
     "uiPagesDuration": 4000,
     "uiHeadline": "",
     "uiDisablePageswitch": "1",
@@ -855,7 +910,7 @@ Values must be in range 1..255
     "bedSensorType": 4,
     "bedSensorPin": "TEMP_1_PIN",
     "bedHeaterPin": "HEATER_1_PIN",
-    "bedHeatManager": 1,
+    "bedHeatManager": 0,
     "bedPreheat": 55,
     "bedUpdateInterval": 5000,
     "bedPidDriveMin": 80,
