@@ -632,7 +632,7 @@ STEPPER_CURRENT_CONTROL
 
 // bed
 #define HEATER_1_PIN 20
-#define TEMP_1_PIN 11
+#define TEMP_1_PIN 12
 
 #define HEATER_0_PIN 5
 #define TEMP_0_PIN 8
