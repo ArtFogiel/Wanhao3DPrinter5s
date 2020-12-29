@@ -304,8 +304,8 @@ It also can add a delay to wait for spindle to run on full speed.
 #define ENDSTOP_PULLUP_Y_MIN true
 #define ENDSTOP_Y_MIN_INVERTING true
 #define MIN_HARDWARE_ENDSTOP_Y true
-#define ENDSTOP_PULLUP_Z_MIN true
-#define ENDSTOP_Z_MIN_INVERTING true
+#define ENDSTOP_PULLUP_Z_MIN false
+#define ENDSTOP_Z_MIN_INVERTING false
 #define MIN_HARDWARE_ENDSTOP_Z true
 #define ENDSTOP_PULLUP_Z2_MINMAX true
 #define ENDSTOP_Z2_MINMAX_INVERTING false
@@ -360,7 +360,7 @@ It also can add a delay to wait for spindle to run on full speed.
 #define ENDSTOP_X_BACK_ON_HOME 1
 #define ENDSTOP_Y_BACK_ON_HOME 1
 #define ENDSTOP_Z_BACK_ON_HOME 0
-#define ALWAYS_CHECK_ENDSTOPS 1
+#define ALWAYS_CHECK_ENDSTOPS 0
 #define MOVE_X_WHEN_HOMED 0
 #define MOVE_Y_WHEN_HOMED 0
 #define MOVE_Z_WHEN_HOMED 0
@@ -433,15 +433,15 @@ It also can add a delay to wait for spindle to run on full speed.
 #define HOMING_FEEDRATE_X 40
 #define HOMING_FEEDRATE_Y 40
 #define HOMING_FEEDRATE_Z 20
-#define HOMING_ORDER HOME_ORDER_XYZ
+#define HOMING_ORDER HOME_ORDER_XYTZ
 #define ZHOME_PRE_RAISE 0
 #define ZHOME_PRE_RAISE_DISTANCE 10
 #define RAISE_Z_ON_TOOLCHANGE 0
 #define ZHOME_MIN_TEMPERATURE 0
 #define ZHOME_HEAT_ALL 1
 #define ZHOME_HEAT_HEIGHT 20
-#define ZHOME_X_POS 999999
-#define ZHOME_Y_POS 999999
+#define ZHOME_X_POS 150
+#define ZHOME_Y_POS 100
 #define ENABLE_BACKLASH_COMPENSATION 0
 #define X_BACKLASH 0
 #define Y_BACKLASH 0
@@ -516,7 +516,7 @@ M340 P<servoId> S<pulseInUS>   / ServoID = 0..3  pulseInUs = 500..2500
 Servos are controlled by a pulse width normally between 500 and 2500 with 1500ms in center position. 0 turns servo off.
 WARNING: Servos can draw a considerable amount of current. Make sure your system can handle this or you may risk your hardware!
 */
-#define FEATURE_SERVO 0
+#define FEATURE_SERVO 1
 #define SERVO0_PIN 11
 #define SERVO1_PIN -1
 #define SERVO2_PIN -1
@@ -536,37 +536,37 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define Z_PROBE_Z_OFFSET 0
 #define Z_PROBE_Z_OFFSET_MODE 0
 #define UI_BED_COATING 0
-#define FEATURE_Z_PROBE 0
+#define FEATURE_Z_PROBE 1
 #define EXTRUDER_IS_Z_PROBE 0
 #define Z_PROBE_DISABLE_HEATERS 0
 #define Z_PROBE_BED_DISTANCE 10
-#define Z_PROBE_PIN -1
+#define Z_PROBE_PIN ORIG_Z_MIN_PIN
 #define Z_PROBE_PULLUP 0
-#define Z_PROBE_ON_HIGH 0
+#define Z_PROBE_ON_HIGH 1
 #define Z_PROBE_X_OFFSET 0
 #define Z_PROBE_Y_OFFSET 0
 #define Z_PROBE_WAIT_BEFORE_TEST 0
 #define Z_PROBE_SPEED 2
 #define Z_PROBE_XY_SPEED 150
-#define Z_PROBE_SWITCHING_DISTANCE 1
-#define Z_PROBE_REPETITIONS 1
-#define Z_PROBE_USE_MEDIAN 0
-#define Z_PROBE_HEIGHT 40
+#define Z_PROBE_SWITCHING_DISTANCE 4
+#define Z_PROBE_REPETITIONS 2
+#define Z_PROBE_USE_MEDIAN 1
+#define Z_PROBE_HEIGHT 0
 #define Z_PROBE_DELAY 0
-#define Z_PROBE_START_SCRIPT ""
-#define Z_PROBE_FINISHED_SCRIPT ""
+#define Z_PROBE_START_SCRIPT "M340 P0 S700"
+#define Z_PROBE_FINISHED_SCRIPT "M340 P0 S1500"
 #define Z_PROBE_RUN_AFTER_EVERY_PROBE ""
 #define Z_PROBE_REQUIRES_HEATING 0
 #define Z_PROBE_MIN_TEMPERATURE 150
-#define FEATURE_AUTOLEVEL 0
+#define FEATURE_AUTOLEVEL 1
 #define FEATURE_SOFTWARE_LEVELING 0
 #define Z_PROBE_X1 20
 #define Z_PROBE_Y1 20
-#define Z_PROBE_X2 160
+#define Z_PROBE_X2 260
 #define Z_PROBE_Y2 20
 #define Z_PROBE_X3 20
 #define Z_PROBE_Y3 160
-#define BED_LEVELING_METHOD 0
+#define BED_LEVELING_METHOD 1
 #define BED_CORRECTION_METHOD 0
 #define BED_LEVELING_GRID_SIZE 5
 #define BED_LEVELING_REPETITIONS 5
@@ -738,7 +738,7 @@ Values must be in range 1..255
     "uiController": 0,
     "xMinEndstop": 1,
     "yMinEndstop": 1,
-    "zMinEndstop": 1,
+    "zMinEndstop": 4,
     "xMaxEndstop": 0,
     "yMaxEndstop": 0,
     "zMaxEndstop": 0,
@@ -790,7 +790,7 @@ Values must be in range 1..255
     "xLength": 310,
     "yLength": 210,
     "zLength": 610,
-    "alwaysCheckEndstops": "1",
+    "alwaysCheckEndstops": "0",
     "disableX": "0",
     "disableY": "0",
     "disableZ": "0",
@@ -874,16 +874,16 @@ Values must be in range 1..255
         "enable": "ORIG_E3_ENABLE_PIN"
     },
     "dittoPrinting": "0",
-    "featureServos": "0",
+    "featureServos": "1",
     "servo0Pin": 11,
     "servo1Pin": -1,
     "servo2Pin": -1,
     "servo3Pin": -1,
     "featureWatchdog": "1",
     "hasHeatedBed": "1",
-    "enableZProbing": "0",
+    "enableZProbing": "1",
     "extrudeMaxLength": 160,
-    "homeOrder": "HOME_ORDER_XYZ",
+    "homeOrder": "HOME_ORDER_XYTZ",
     "featureController": 11,
     "uiPrinterName": "Wanhao D5S",
     "uiPrinterCompany": "Fogg Industries",
@@ -986,29 +986,29 @@ Values must be in range 1..255
     "fanThermoThermistorPin": -1,
     "fanThermoThermistorType": 1,
     "scalePidToMax": "0",
-    "zProbePin": -1,
+    "zProbePin": "ORIG_Z_MIN_PIN",
     "zProbeBedDistance": 10,
     "zProbeDisableHeaters": "0",
     "zProbePullup": "0",
-    "zProbeOnHigh": "0",
+    "zProbeOnHigh": "1",
     "zProbeXOffset": 0,
     "zProbeYOffset": 0,
     "zProbeWaitBeforeTest": "0",
     "zProbeSpeed": 2,
     "zProbeXYSpeed": 150,
-    "zProbeHeight": 40,
-    "zProbeStartScript": "",
-    "zProbeFinishedScript": "",
-    "featureAutolevel": "0",
+    "zProbeHeight": 0,
+    "zProbeStartScript": "M340 P0 S700",
+    "zProbeFinishedScript": "M340 P0 S1500",
+    "featureAutolevel": "1",
     "zProbeX1": 20,
     "zProbeY1": 20,
-    "zProbeX2": 160,
+    "zProbeX2": 260,
     "zProbeY2": 20,
     "zProbeX3": 20,
     "zProbeY3": 160,
-    "zProbeSwitchingDistance": 1,
-    "zProbeRepetitions": 1,
-    "zProbeMedian": "0",
+    "zProbeSwitchingDistance": 4,
+    "zProbeRepetitions": 2,
+    "zProbeMedian": "1",
     "zProbeEveryPoint": "",
     "sdSupport": "1",
     "sdCardDetectPin": -1,
@@ -1194,8 +1194,8 @@ Values must be in range 1..255
     ],
     "manualConfig": "",
     "zHomeMinTemperature": 0,
-    "zHomeXPos": 999999,
-    "zHomeYPos": 999999,
+    "zHomeXPos": 150,
+    "zHomeYPos": 100,
     "zHomeHeatHeight": 20,
     "zHomeHeatAll": "1",
     "zProbeZOffsetMode": 0,
@@ -1240,7 +1240,7 @@ Values must be in range 1..255
     "cncSafeZ": 150,
     "startupGCode": "",
     "jsonOutput": "0",
-    "bedLevelingMethod": 0,
+    "bedLevelingMethod": 1,
     "bedCorrectionMethod": 0,
     "bedLevelingGridSize": 5,
     "bedLevelingRepetitions": 5,
